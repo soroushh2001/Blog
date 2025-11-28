@@ -1,0 +1,40 @@
+﻿@using Blog.Application.Statics
+@using CarPartsShop.Application.Extensions
+@model List<Blog.Application.ViewModels.Posts.LatestPostViewModel>
+<section class="p-0">
+    <div class="container">
+        <div class="row g-4">
+            <!-- Card item START -->
+            @foreach(var item in Model)
+            {
+                <div class="col-sm-6 col-lg-4">
+                    <div class="card card-overlay-bottom card-img-scale overflow-hidden">
+                        <!-- Card featured -->
+                        <!-- Card Image -->
+                        <img src="@PathTools.PostOrgImagePath@item.MainImage" alt="">
+                        <!-- Card Image overlay -->
+                        <div class="card-img-overlay d-flex flex-column p-3 p-md-4">
+                            <div>
+                                <!-- Card category -->
+                                <a href="#" class="badge text-bg-@item.Category.CategoryColor.BootstrapClassName"><i class="fas fa-circle me-2 small fw-bold"></i>@item.Category.Title</a>
+                            </div>
+                            <div class="w-100 mt-auto">
+
+                                <!-- Card title -->
+                                <h4 class="text-white"><a href="post-single-5.html" class="btn-link text-reset stretched-link">@item.Title</a></h4>
+                                <!-- Card info -->
+                                <ul class="nav nav-divider text-white-force align-items-center small">
+                                 
+                                    <li class="nav-item">@item.PublishedDate.ToShamsiDateWithMonthName()</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+           
+            <!-- Card item END -->
+
+        </div> <!-- Row END -->
+    </div>
+</section>

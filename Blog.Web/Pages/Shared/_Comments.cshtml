@@ -1,0 +1,44 @@
+﻿@model List<Blog.Application.ViewModels.Comments.CommentsListViewModel>;
+@if (Model.Any() && Model != null)
+{
+
+    @foreach (var comment in Model.Where(c => c.ParentId == null))
+    {
+        <!-- Comment level 1-->
+        <div class="my-4 d-flex parent-comment">
+            <img class="avatar avatar-md rounded-circle float-start me-3" src="/site/assets/images/avatar/01.jpg" alt="avatar">
+            <div>
+                <div class="mb-2">
+                    <h5 class="m-0">@comment.UserName</h5>
+                    <span class="me-3 small">21 خرداد، 1400 در 3:00 بعد از ظهر </span>
+                    <a href="javascript:void(0)" onclick="setReply('@comment.Id')" class="text-body fw-normal">پاسخ</a>
+                </div>
+                <p>@comment.Text</p>
+            </div>
+        </div>
+        <!-- Comment children level 2 -->
+        if (Model.Any(p => p.ParentId == comment.Id))
+        {
+            foreach (var reply in Model.Where(p => p.ParentId == comment.Id))
+            {
+                <div class="my-4 d-flex ps-2 ps-md-3">
+                    <img class="avatar avatar-md rounded-circle float-start me-3" src="/site/assets/images/avatar/02.jpg" alt="avatar">
+                    <div>
+                        <div class="mb-2">
+                            <h5 class="m-0">@reply.UserName</h5>
+                            <span class="me-3 small">21 خرداد، 1400 در 3:00 بعد از ظهر </span>
+                            <a href="#" class="text-body fw-normal">پاسخ</a>
+                        </div>
+                        <p>@comment.Text</p>
+                    </div>
+                </div>
+
+            }
+        }
+
+    }
+    <button id="load-btn" onclick="loadMoreComments()" class="btn btn-primary">Load More</button>
+
+
+}
+

@@ -1,0 +1,133 @@
+﻿@page
+@using Blog.Application.Statics
+@using Blog.Data.Entites.Blog
+@model Blog.Web.Areas.Admin.Pages.Posts.EditModel
+@{
+    ViewData["Title"] = $"ویرایش {Model.Edit.Title}";
+}
+
+@section Scripts {
+
+    <script>
+        $("#tagSelect").select2({
+            width: "100%",
+            language: "fa",
+            tags: true,
+            placeholder: "تگ‌ها...",
+            minimumInputLength: 1,
+            tokenSeparators: [",", "،"],
+            ajax: {
+                url: "/Admin/Posts?handler=TagSearch",
+                dataType: "json",
+                delay: 250,
+                data: function (params) {
+                    return { term: params.term };
+                },
+                processResults: function (data) {
+                    return {
+                        results: data.map(tag => ({ id: tag, text: tag }))
+                    };
+                }
+            }
+        });
+    </script>
+
+    }
+
+<div class="row">
+    <!-- Basic Layout -->
+    <div class="col-md-12">
+        <div class="card mb-4">
+            <div class="card-header d-flex align-items-center justify-content-between">
+                <h5 class="mb-0">@ViewData["Title"]</h5>
+            </div>
+            <div class="card-body">
+                <form method="post" enctype="multipart/form-data">
+                    <input type="hidden" asp-for="Edit.Id"/>
+                    <input type="hidden" asp-for="Edit.MainImage"/>
+                    <div class="row mb-3">
+                        <label class="col-sm-2 col-form-label" asp-for="Edit.Title"></label>
+                        <div class="col-sm-10">
+                            <input asp-for="Edit.Title" class="form-control">
+                        </div>
+                    </div>
+
+                    <div class="row mb-3">
+                        <label class="col-sm-2 col-form-label" asp-for="Edit.CategoryId"></label>
+                        <div class="col-sm-10">
+                            <select class="form-select" asp-items="Model.CategoriesSelectList" asp-for="Edit.CategoryId"></select>
+                        </div>
+                    </div>
+
+
+                    <div class="row mb-3">
+                        <label class="col-sm-2 col-form-label" asp-for="Edit.CategoryId"></label>
+                        <div class="col-sm-10">
+                            <select asp-for="Edit.Tags" id="tagSelect" class="form-select" multiple>
+
+                                @foreach (var tag in Model.Edit.Tags)
+                                {
+                                    <option selected value="@tag">@tag</option>
+                                }
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="row mb-3">
+                        <label class="col-sm-2 col-form-label" asp-for="Edit.NewMainImage"></label>
+                        <div class="col-sm-10">
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <input type="file" accept=".jpeg,.png,.webp,.jpg" asp-for="Edit.NewMainImage" class="form-control" image-input="1">
+                                </div>
+                                <div class="col-md-8">
+                                    <img 
+                                        src="@PathTools.PostThumbImagePath@Model.Edit.MainImage"
+                                        style="width: 200px;height: 200px" image-preview="1" />
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <div class="row mb-3">
+                        <label class="col-sm-2 col-form-label" asp-for="Edit.ShortDescription"></label>
+                        <div class="col-sm-10">
+                            <textarea class="tinymce" asp-for="Edit.ShortDescription"></textarea>
+                        </div>
+                    </div>
+
+
+                    <div class="row mb-3">
+                        <label class="col-sm-2 col-form-label" asp-for="Edit.Description"></label>
+                        <div class="col-sm-10">
+                            <textarea class="tinymce" asp-for="Edit.Description"></textarea>
+                        </div>
+                    </div>
+
+
+                    <div class="row mb-3">
+                        <label class="col-sm-2 col-form-label" asp-for="Edit.CategoryId"></label>
+                        <div class="col-sm-10">
+                            <select class="form-select" asp-items="@Html.GetEnumSelectList<PostStatus>()" asp-for="Edit.Status"></select>
+                        </div>
+                    </div>
+
+
+
+                    <div asp-validation-summary="All" class="text-danger"></div>
+
+
+                    <div class="row justify-content-end">
+                        <div class="col-sm-10">
+                            <button type="submit" class="btn btn-primary">ثبت</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+</div>
+

@@ -1,0 +1,25 @@
+﻿@using Blog.Application.Statics
+@model List<Blog.Application.ViewModels.Categories.CategoryViewModel>
+<div class="col-lg-3 mt-5 mt-lg-0">
+    <div data-sticky data-margin-top="80" data-sticky-for="767">
+        <!-- Trending topics widget START -->
+        <div>
+            <h4 class="mb-3">دسته بندی</h4>
+            <!-- Category item -->
+            @if (Model.Any() && Model != null)
+            {
+                @foreach(var item in Model)
+                {
+                    <div class="text-center mb-3 card-bg-scale position-relative overflow-hidden rounded" style="background-image:url(@PathTools.CategoryThumbImagePath@item.Image); background-position: center left; background-size: cover;">
+                        <div class="bg-dark-overlay-4 p-3">
+                            <a href="/posts/@item.Slug" class="stretched-link btn-link text-white h5">@item.Title</a>
+                        </div>
+                    </div>
+
+                }
+            }
+
+        </div>
+
+    </div>
+</div>

@@ -1,0 +1,123 @@
+﻿@page
+@using Blog.Application.ViewModels.Accounts
+@using CarPartsShop.Application.Extensions
+@model Blog.Web.Areas.Admin.Pages.Users.IndexModel
+@{
+    ViewData["Title"] = "کاربران";
+    int counter = 0;
+}
+
+<h4>@ViewData["Title"]</h4>
+
+
+<form class="mt-2" method="get" id="filter-form">
+    <input type="hidden" asp-for="Filter.CurrentPage" />
+    <div class="row" id="users-div">
+        <div class="card">
+            <h5 class="card-header">فیلتر</h5>
+            <div class="card-body">
+                <div class="row align-items-center g-3 mb-3">
+                    <div class="col-auto">
+                        <label class="form-label">جستجو</label>
+                        <input type="text" class="form-control form-control-sm" asp-for="Filter.Search">
+                    </div>
+
+                    <div class="col-auto">
+                        <label class="form-label">مرتب‌سازی</label>
+                        <select class="form-select form-select-sm" asp-for="Filter.OrderBy"
+                                asp-items="@Html.GetEnumSelectList<UserOrderBy>()"></select>
+                    </div>
+
+
+
+                    <div class="col-auto">
+                        <label class="form-label">دسته‌بندی</label>
+                        <select class="form-select form-select-sm" asp-for="Filter.RoleId" asp-items="Model.RolesSelectList">
+                            <option value="" selected>همه</option>
+                        </select>
+                    </div>
+
+
+                    <div class="col-auto align-self-end">
+                        <button onclick="submitPagingForm()" class="btn mt-3 btn-sm btn-info">فیلتر</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        @if (Model.Filter.Entities != null && Model.Filter.Entities.Any())
+        {
+            <div class="card mt-2">
+                <div class="table-responsive text-nowrap">
+
+
+                    <table class="table">
+                        <thead>
+                            <tr class="text-nowrap">
+                                <th>#</th>
+                                <th>نام کاربری</th>
+                                <th>ایمیل</th>
+                                <th>وضعیت</th>
+                                <th>تاریخ ثبت نام</th>
+                                <th>عملیات</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model.Filter.Entities)
+                            {
+                                counter++;
+                                <tr>
+                                    <th scope="row">@counter</th>
+                                    <td>@item.Username</td>
+                                    <td>@item.Email</td>
+                                    <td>
+                                        @(item.IsBanned ? "بن" : item.IsActive ? "فعال" : "غیرفعال")
+
+                                    </td>
+                                    <td>@item.RegisterDate.ToShamsiDate()</td>
+
+                                    <td>
+                                        <a asp-area="Admin" asp-page="/Users/ChangeUserPassword"
+                                           asp-route-userId="@item.Id"
+                                           class="btn btn-warning">ویرایش کلمه عبور کاربر</a>
+                                        <a asp-area="Admin" asp-page="/Users/ManageUserRoles"
+                                           asp-route-id="@item.Id"
+                                           class="btn btn-info">ویرایش دسترسی های کاربر</a>
+                                        @if (item.IsBanned)
+                                        {
+                                            <a class="btn btn-outline-success" href="javascript:void(0)"
+                                               onclick="toggleUserBanStatus('@item.Id','@item.Username',true)">رفع مسدودیت</a>
+                                        }
+                                        else
+                                        {
+                                            <a class="btn btn-outline-danger" href="javascript:void(0)"
+                                               onclick="toggleUserBanStatus('@item.Id','@item.Username',false)">مسدود</a>
+                                        }
+
+                                        @if (!item.IsActive)
+                                        {
+                                            <a class="btn btn-success" href="javascript:void(0)"
+                                               onclick="toggleUserActivationStatus('@item.Id','@item.Username',true)">فعالسازی</a>
+                                        }
+                                        else
+                                        {
+                                            <a class="btn btn-danger" href="javascript:void(0)"
+                                               onclick="toggleUserActivationStatus('@item.Id','@item.Username',false)">غیرفعالسازی </a>
+                                        }
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                    <partial name="_AdminPaging"
+                             model="Model.Filter.GetPaging()" />
+                </div>
+            </div>
+        }
+        else
+        {
+            <p class="alert alert-info mt-2">موردی جهت نمایش وجود ندارد</p>
+        }
+    </div>
+
+</form>

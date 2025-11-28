@@ -1,0 +1,139 @@
+﻿@page "/posts/details/{slug}"
+@using Blog.Application.Statics
+@using Blog.Application.ViewModels.Comments
+@model Blog.Web.Pages.Posts.DetailsModel
+@{
+    ViewData["Title"] = $"{Model.Post.Title}";
+}
+
+
+<section class="bg-dark-overlay-4" style="background-image:url(@PathTools.PostOrgImagePath@Model.Post.MainImage); background-position: center left; background-size: cover;">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 py-md-5 my-lg-5">
+                <a href="#" class="badge text-bg-@Model.Post.Category.CategoryColor.BootstrapClassName mb-2"><i class="fas fa-circle me-2 small fw-bold"></i>@Model.Post.Category.Title</a>
+                <h1 class="text-white">@Model.Post.Title</h1>
+                <p class="lead text-white">
+                    @Html.Raw(Model.Post.Description)
+                </p>
+                @foreach (var tag in Model.Post.Tags)
+                {
+                    <a href="#" class="badge text-bg-light">@tag</a>
+                }
+            </div>
+        </div>
+    </div>
+</section>
+
+<section>
+    <div class="container position-relative" data-sticky-container="">
+        <div class="row">
+            <!-- Main Content START -->
+            <div class="col-lg-9 mb-5">
+
+                @Html.Raw(Model.Post.Description)
+
+            </div>
+            <!-- Author info END -->
+            <!-- Comments START -->
+            <div id="comments-section" class="mt-5">
+              
+
+            </div>
+            <!-- Comments END -->
+            <!-- Reply START -->
+            <div id="comment-form">
+                <partial name="_AddComment" model="new CreateCommentViewModel(){
+PostId = Model.Post.Id,
+PostSlug = Model.Post.Slug,
+}" />
+            </div>
+            <!-- Reply END -->
+
+        </div>
+        <!-- Main Content END -->
+
+    </div>
+    </div>
+</section>
+
+@section Scripts {
+    <script>
+      
+        let skip = 0;
+const take = 10; 
+const postId = '@Model.Post.Id';
+const postSlug = '@Model.Post.Slug';
+
+
+
+function loadMoreComments() {
+    $.get(`/Posts/Details/${postSlug}?handler=LoadComments`, { postId: postId, skip: skip, take: take })
+        .done(function (html) {
+            html = html.trim();
+
+            if (!html) {
+                $("#load-btn").hide(); 
+                return;
+            }
+
+            $("#comments-section").append(html);
+            skip += take; 
+
+            const returnedCount = $(html).filter('.parent-comment').length;
+            if (returnedCount < take) {
+                $("#load-btn").hide();
+            } else {
+                $("#load-btn").show();
+            }
+        });
+}
+$(document).ready(function () {
+    loadMoreComments(); 
+});
+
+         function scrollToCommentForm() {
+       const element = document.getElementById("comment-form");
+    if (!element) return;
+
+    element.scrollIntoView({
+        behavior: "smooth",
+        block: "start"
+    });
+
+    setTimeout(() => {
+        window.scrollBy({
+            top: -120,
+            behavior: "smooth"
+        });
+    }, 200);
+}
+
+function highlightInputBox() {
+    const box = document.querySelector("#comment-form textarea");
+    if (!box) return;
+
+    const originalColor = getComputedStyle(box).backgroundColor; 
+
+    let toggle = false;
+    let count = 0;
+
+    const interval = setInterval(() => {
+        toggle = !toggle;
+        box.style.backgroundColor = toggle ? "#fff3cd" : originalColor;
+
+        if (count >= 6) { 
+            clearInterval(interval);
+            box.style.backgroundColor = originalColor; 
+        }
+    }, 200);
+}
+
+   function setReply(parentId){
+             $("#ParentId").val(parentId);
+             scrollToCommentForm();
+             highlightInputBox();
+             toastr.info('پاسخ خود را در کادر دیدگاه وارد کنید.');
+         }
+    </script>
+}

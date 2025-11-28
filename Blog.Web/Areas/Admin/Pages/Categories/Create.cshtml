@@ -1,0 +1,65 @@
+﻿@page
+@model Blog.Web.Areas.Admin.Pages.Categories.CreateModel
+@{
+    ViewData["Title"] = "افزودن دسته بندی";
+}
+
+<div class="row">
+    <!-- Basic Layout -->
+    <div class="col-md-12">
+        <div class="card mb-4">
+            <div class="card-header d-flex align-items-center justify-content-between">
+                <h5 class="mb-0">افزودن دسته بندی</h5>
+            </div>
+            <div class="card-body">
+                <form method="post" enctype="multipart/form-data">
+                    <div class="row mb-3">
+                        <label class="col-sm-2 col-form-label" asp-for="Create.Title"></label>
+                        <div class="col-sm-10">
+                            <input asp-for="Create.Title" class="form-control">
+                        </div>
+                    </div>
+
+                    <div class="row mb-3">
+                        <label class="col-sm-2 col-form-label" asp-for="Create.Slug"></label>
+                        <div class="col-sm-10">
+                            <input asp-for="Create.Slug" class="form-control">
+                        </div>
+                    </div>
+
+                    <div class="row mb-3">
+                        <label class="col-sm-2 col-form-label" asp-for="Create.CategoryColorId"></label>
+                        <div class="col-sm-10">
+                            <select class="form-select" asp-items="Model.ColorsSelectListItem" asp-for="Create.CategoryColorId"></select>
+                        </div>
+                    </div>
+
+                    <div class="row mb-3">
+                        <label class="col-sm-2 col-form-label" asp-for="Create.Image"></label>
+                        <div class="col-sm-10">
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <input type="file" accept=".jpeg,.png,.webp,.jpg" asp-for="Create.Image" class="form-control" image-input="1">
+                                </div>
+                                <div class="col-md-8">
+                                    <img style="display: none;width: 200px;height: 200px" image-preview="1" />
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div asp-validation-summary="All" class="text-danger"></div>
+
+
+                    <div class="row justify-content-end">
+                        <div class="col-sm-10">
+                            <button type="submit" class="btn btn-primary">ثبت</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+</div>

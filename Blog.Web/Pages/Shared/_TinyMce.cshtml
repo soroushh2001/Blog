@@ -1,0 +1,18 @@
+﻿<script src="/lib/tinymce/tinymce.min.js"></script>
+
+<script>
+    tinymce.init({
+        selector: '.tinymce',
+        language: "fa",
+        license_key: 'gpl',
+        plugins: 'anchor autolink charmap codesample emoticons image link lists media searchreplace table visualblocks wordcount',
+        toolbar: 'undo redo | blocks fontfamily fontsize | bold italic underline strikethrough | link image media table | align lineheight | numlist bullist indent outdent | emoticons charmap | removeformat',
+        images_upload_url: '/Index?handler=UploadImage',
+    });
+</script>
+
+<style>
+    .tox-promotion-link {
+        display: none !important;
+    }
+</style>

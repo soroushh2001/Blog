@@ -1,0 +1,24 @@
+﻿@page
+@model IndexModel
+@{
+    ViewData["Title"] = "خانه";
+}
+    <!-- =======================
+    Main hero START -->
+    @await Component.InvokeAsync("Slider")
+    <!-- =======================
+    Main hero END -->
+    <!-- =======================
+    Cards START -->
+@await Component.InvokeAsync("NewestPosts")
+    <!-- =======================
+    Cards END -->
+    <!-- =======================
+
+    <!-- =======================
+    Trending topics START -->
+   @await Component.InvokeAsync("CategoryList")
+    <!-- =======================
+    Trending topics END -->
+    <!-- =======================
+

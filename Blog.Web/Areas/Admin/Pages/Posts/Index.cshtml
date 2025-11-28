@@ -1,0 +1,117 @@
+﻿@page
+@using Blog.Application.ViewModels.Posts
+@using Blog.Web.Helpers
+@using CarPartsShop.Application.Extensions
+@model Blog.Web.Areas.Admin.Pages.Posts.IndexModel
+@{
+    ViewData["Title"] = "پست ها";
+    int counter = 0;
+}
+
+<h4>@ViewData["Title"]</h4>
+
+
+<form class="mt-2" method="get" id="filter-form">
+    <input type="hidden" asp-for="Filter.CurrentPage" />
+    <div class="row" id="posts-div">
+        <div class="card">
+            <h5 class="card-header">فیلتر</h5>
+            <div class="card-body">
+                <div class="row align-items-center g-3 mb-3">
+                    <div class="col-auto">
+                        <label class="form-label">جستجو</label>
+                        <input type="text" class="form-control form-control-sm" asp-for="Filter.Search">
+                    </div>
+
+                    <div class="col-auto">
+                        <label class="form-label">مرتب‌سازی</label>
+                        <select class="form-select form-select-sm" asp-for="Filter.PostSortBy"
+                                asp-items="@Html.GetEnumSelectList<PostSortBy>()"></select>
+                    </div>
+
+                    <div class="col-auto">
+                        <label class="form-label">ترتیب</label>
+                        <select class="form-select form-select-sm" asp-for="Filter.PostOrderBy"
+                                asp-items="@Html.GetEnumSelectList<PostOrderBy>()"></select>
+                    </div>
+
+                    <div class="col-auto">
+                        <label class="form-label">دسته‌بندی</label>
+                        <select class="form-select form-select-sm" asp-for="Filter.CategorySlug" asp-items="Model.CategoriesSelectList">
+                            <option value="" selected>همه</option>
+                        </select>
+                    </div>
+
+
+                    <div class="col-auto align-self-end">
+                        <button onclick="submitPagingForm()" class="btn mt-3 btn-sm btn-info">فیلتر</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-2">
+                <a asp-area="Admin" asp-page="/Posts/Create" class="btn btn-success mt-2">افزودن</a>
+            </div>
+        </div>
+
+        @if (Model.Filter.Entities != null && Model.Filter.Entities.Any())
+        {
+            <div class="card mt-2">
+                <div class="table-responsive text-nowrap">
+
+
+                    <table class="table">
+                        <thead>
+                            <tr class="text-nowrap">
+                                <th>#</th>
+                                <th>عنوان</th>
+                                <th>دسته بندی</th>
+                                <th>وضعیت</th>
+                                <th>تاریخ آخرین بروزرسانی</th>
+                                <th>عملیات</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model.Filter.Entities)
+                            {
+                                counter++;
+                                <tr>
+                                    <th scope="row">@counter</th>
+                                    <td>@item.Title</td>
+                                    <td>@item.CategoryTitle</td>
+                                    <td>@item.Status.GetDisplayName()</td>
+                                    <td>@item.LastUpdateDate.ToShamsiDate()</td>
+
+                                    <td>
+                                        <a asp-area="Admin" asp-page="/Posts/Edit"
+                                           asp-route-id="@item.Id"
+                                           class="btn btn-warning">ویرایش</a>
+                                        @if (item.IsDeleted)
+                                        {
+                                            <a class="btn btn-info" href="javascript:void(0)"
+                                               onclick="toggleDeletePost('@item.Id','@item.Title',true)">بازگردانی</a>
+                                        }
+                                        else
+                                        {
+                                            <a class="btn btn-danger" href="javascript:void(0)"
+                                               onclick="toggleDeletePost('@item.Id','@item.Title',false)">حذف</a>
+                                        }
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                    <partial name="_AdminPaging"
+                             model="Model.Filter.GetPaging()" />
+                </div>
+            </div>
+        }
+        else
+        {
+            <p class="alert alert-info mt-2">موردی جهت نمایش وجود ندارد</p>
+        }
+    </div>
+
+</form>

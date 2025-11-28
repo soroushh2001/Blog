@@ -1,0 +1,18 @@
+﻿@model Blog.Application.ViewModels.Comments.CreateCommentViewModel
+
+<h3>ثبت دیدگاه</h3>
+<small>آدرس ایمیل شما منتشر نخواهد شد. فیلدهای الزامی علامت گذاری شده اند *</small>
+<form method="post" class="row g-3 mt-2">
+
+    <input type="hidden" asp-for="PostSlug" />
+    <input type="hidden" asp-for="PostId" />
+    <input type="hidden" asp-for="ParentId" />
+
+    <div class="col-12">
+        <label class="form-label">متن دیدگاه *</label>
+        <textarea asp-for="Text" class="form-control" rows="3"></textarea>
+    </div>
+    <div class="col-12">
+        <button type="submit" class="btn btn-primary">ثبت</button>
+    </div>
+</form>

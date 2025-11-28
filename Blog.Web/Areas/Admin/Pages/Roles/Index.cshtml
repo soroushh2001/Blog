@@ -1,0 +1,52 @@
+﻿@page
+@model Blog.Web.Areas.Admin.Pages.Roles.IndexModel
+@{
+    ViewData["Title"] = "نقش ها";
+    int counter = 0;
+}
+
+<a class="btn btn-success" asp-area="Admin" asp-page="/Roles/Create">افزودن</a>
+<div class="row" id="roles-div">
+    @if (Model.Roles.Any())
+    {
+        <div class="card mt-2">
+            <div class="table-responsive text-nowrap">
+
+                <table class="table">
+                    <thead>
+                        <tr class="text-nowrap">
+                            <th>#</th>
+                            <th>عنوان</th>
+                            <th>عملیات</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model.Roles)
+                        {
+                            counter++;
+                            <tr id="category-@item.Id">
+                                <th scope="row">@counter</th>
+                                <td>@item.PersianTitle</td>
+                                <td>
+
+                                    <a class="btn btn-warning" asp-area="Admin" asp-page="/Roles/Edit" asp-route-id="@item.Id">ویرایش</a>
+
+
+                                    <a class="btn btn-danger" href="javascript:void(0)"
+                                       onclick="deleteRole('@item.Id','@item.PersianTitle')">حذف</a>
+
+
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    }
+    else
+    {
+        <p class="alert alert-info">موردی جهت نمایش وجود ندارد</p>
+    }
+</div>
+
