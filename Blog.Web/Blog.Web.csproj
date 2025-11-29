@@ -69,6 +69,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Areas\UserPanel\Pages\Sahred\" />
     <Folder Include="wwwroot\content\category\" />
   </ItemGroup>
 

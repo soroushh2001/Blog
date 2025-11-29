@@ -34,6 +34,10 @@ namespace Blog.Application.Services.Implementation
                 query = query.Where(q => q.Category.Slug.Contains(filter.CategorySlug));
             }
 
+            if (!string.IsNullOrEmpty(filter.Tag))
+            {
+                query = query.Where(q => q.PostTags.Any(q=> q.Tag.Slug == filter.Tag));
+            }
 
             switch (filter.PostStatus)
             {
@@ -79,7 +83,8 @@ namespace Blog.Application.Services.Implementation
                 CategoryTitle = q.Category.Title,
                 CategoryBootstarpClass = q.Category.CategoryColor.BootstrapClassName,
                 MainImage = q.MainImage,
-                ShortDescription = q.ShortDescription
+                ShortDescription = q.ShortDescription,
+                CategorySlug = q.Category.Slug
             });
            
             await filter.SetPagingAsync(items);
@@ -240,7 +245,7 @@ namespace Blog.Application.Services.Implementation
                 Description = post.Description,
                 ShortDescription = post.ShortDescription,
                 Slug = post.Slug,
-                Tags = await _postRepository.GetSelectedTagTitlesAsync(post.Id),
+                Tags = await _postRepository.GetSelectedTagsAsync(post.Id),
                 Title = post.Title,
                 MainImage = post.MainImage,
                 Id = post.Id

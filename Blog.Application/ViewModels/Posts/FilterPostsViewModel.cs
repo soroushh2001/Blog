@@ -11,6 +11,7 @@ namespace Blog.Application.ViewModels.Posts
         public PostSortBy PostSortBy { get; set; }
 
         public PostOrderBy PostOrderBy { get; set; }
+        public string? Tag { get; set; }
     }
 
     public enum PostStatusForAdmin

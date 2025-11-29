@@ -19,5 +19,8 @@ namespace Blog.Application.Services.Interfaces
         Task ManageUserSelectedRolesAsync(ManageUserRolesViewModel manage);
         Task<bool> ToggleUserActivationStatusAsync(int userId);
         Task<bool> ToggleUserBanStatusAsync(int userId);
+        Task<EditUserInProfile?> GetUserForEditInProfileAsync(int userId);
+        Task<EditUserInProfileResult> EditUserInProfileAsync(int userId, EditUserInProfile edit);
+        Task<bool> ChangePasswordInUserPanelAsync(int userId, ChangePasswordInUserPanelViewModel change);
     }
 }

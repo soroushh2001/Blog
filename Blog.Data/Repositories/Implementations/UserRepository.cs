@@ -18,9 +18,9 @@ namespace Blog.Data.Repositories.Implementations
 
         #endregion
 
-        public async Task<bool> CheckUserNameExistedAsync(string userName)
+        public async Task<bool> CheckUserNameExistedAsync(string userName, int? userId = null)
         {
-            return await _context.Users.AnyAsync(u => u.UserName == userName);
+            return await _context.Users.AnyAsync(u => u.UserName == userName && u.Id != userId);
         }
 
         public async Task<bool> CheckEmailExistedAsync(string email)

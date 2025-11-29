@@ -19,6 +19,7 @@ namespace Blog.Web.Areas.Admin.Pages.Users
 
         #endregion
 
+        [BindProperty]
         public ChangeUserPasswordinAdminViewModel Change { get; set; } = new();
 
         public void OnGet(int userId)

@@ -30,7 +30,7 @@ builder.Services.AddAuthentication(options =>
 }).AddCookie(options =>
 {
     options.LoginPath = "/login";
-    options.LogoutPath = "/logout";
+    options.LogoutPath = "/login?handler=Logout";
     options.ExpireTimeSpan = TimeSpan.FromDays(30);
     options.SlidingExpiration = true;
 });

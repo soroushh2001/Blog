@@ -14,18 +14,32 @@
         #region Post
 
         public const string PostOrgImagePath = "/content/post/org/";
-        public static string PostOrgImageServerPath = 
+        public static string PostOrgImageServerPath =
             Path.Combine(Directory.GetCurrentDirectory(), $"wwwroot{PostOrgImagePath}");
         public const string PostThumbImagePath = "/content/post/thumb/";
-        public static string PostThumbImageServerPath = 
+        public static string PostThumbImageServerPath =
             Path.Combine(Directory.GetCurrentDirectory(), $"wwwroot{PostThumbImagePath}");
 
 
         #endregion
 
+        #region RichTextEditor
+
         public const string RichTextEditorContentPath = "/content/editor/";
         public static string RichTextEditorContentServerPath = Path.Combine(Directory.GetCurrentDirectory(), $"wwwroot{RichTextEditorContentPath}");
 
+        #endregion
+
+        #region UserAvatar
+
+        public const string UserAvatarOrgPath = "/content/user/org/";
+        public static string UserAvatarOrgServerPath =
+            Path.Combine(Directory.GetCurrentDirectory(), $"wwwroot{UserAvatarOrgPath}");
+        public const string UserAvatarThumbPath = "/content/user/thumb/";
+        public static string UserAvatarThumbServerPath =
+            Path.Combine(Directory.GetCurrentDirectory(), $"wwwroot{UserAvatarThumbPath}");
+
+        #endregion
 
     }
 }

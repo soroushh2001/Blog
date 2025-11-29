@@ -17,5 +17,6 @@ namespace Blog.Data.Repositories.Interfaces
         Task<List<string>> GetSelectedTagTitlesAsync(int postId);
         Task<List<Post>> GetLatestAsync(int take);
         Task<Post?> GetBySlygAsync(string slug);
+        Task<List<Tag>> GetSelectedTagsAsync(int postId);
     }
 }

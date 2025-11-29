@@ -99,5 +99,11 @@ namespace Blog.Data.Repositories.Implementations
                 .ThenInclude(p => p.Tag)
                 .FirstOrDefaultAsync(p => p.Slug == slug);
         }
+
+        public async Task<List<Tag>> GetSelectedTagsAsync(int postId)
+        {
+            return await _context.PostTags.Where(p => p.PostId == postId)
+                .Select(p => p.Tag).ToListAsync();
+        }
     }
 }

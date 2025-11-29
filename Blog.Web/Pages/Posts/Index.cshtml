@@ -46,8 +46,8 @@
                                         <img class="rounded-3" src="@PathTools.PostThumbImagePath@post.MainImage" alt="@post.Title">
                                     </div>
                                     <div class="col-md-7 mt-3 mt-md-0">
-                                        <a href="#" class="badge text-bg-@post.CategoryBootstarpClass mb-2"><i class="fas fa-circle me-2 small fw-bold"></i>@post.CategoryTitle</a>
-                                        <h4><a href="post-single-2.html" class="btn-link stretched-link text-reset">@post.Title</a></h4>
+                                        <a href="/posts/@post.CategorySlug" class="badge text-bg-@post.CategoryBootstarpClass mb-2"><i class="fas fa-circle me-2 small fw-bold"></i>@post.CategoryTitle</a>
+                                        <h4><a href="/posts/details/@post.Slug" class="btn-link stretched-link text-reset">@post.Title</a></h4>
                                         <h4>
                                             @Html.Raw(post.ShortDescription)
                                         </h4>                                        <!-- Card info -->

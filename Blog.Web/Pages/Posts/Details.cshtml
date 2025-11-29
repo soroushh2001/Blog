@@ -11,14 +11,14 @@
     <div class="container">
         <div class="row">
             <div class="col-lg-8 py-md-5 my-lg-5">
-                <a href="#" class="badge text-bg-@Model.Post.Category.CategoryColor.BootstrapClassName mb-2"><i class="fas fa-circle me-2 small fw-bold"></i>@Model.Post.Category.Title</a>
+                <a href="/posts/@Model.Post.Category.Slug" class="badge text-bg-@Model.Post.Category.CategoryColor.BootstrapClassName mb-2"><i class="fas fa-circle me-2 small fw-bold"></i>@Model.Post.Category.Title</a>
                 <h1 class="text-white">@Model.Post.Title</h1>
                 <p class="lead text-white">
                     @Html.Raw(Model.Post.Description)
                 </p>
                 @foreach (var tag in Model.Post.Tags)
                 {
-                    <a href="#" class="badge text-bg-light">@tag</a>
+                    <a href="/posts?tag=@tag.Slug" class="badge text-bg-light">@tag.Title</a>
                 }
             </div>
         </div>

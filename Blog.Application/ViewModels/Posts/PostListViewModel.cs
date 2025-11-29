@@ -26,5 +26,7 @@ namespace Blog.Application.ViewModels.Posts
         public string CategoryBootstarpClass { get; set; }
 
         public string ShortDescription { get; set;  }
+
+        public string CategorySlug { get; set; } = null!;
     }
 }

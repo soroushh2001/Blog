@@ -4,7 +4,7 @@ namespace Blog.Data.Repositories.Interfaces
 {
     public interface IUserRepository
     {
-        Task<bool> CheckUserNameExistedAsync(string userName);
+        Task<bool> CheckUserNameExistedAsync(string userName, int? userId = null);
         Task<bool> CheckEmailExistedAsync(string email);
         Task AddAsync(User user);
         void Update(User user);

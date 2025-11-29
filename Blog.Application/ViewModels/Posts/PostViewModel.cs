@@ -15,7 +15,7 @@ namespace Blog.Application.ViewModels.Posts
 
         public Category Category { get; set; } = null!;
 
-        public List<string> Tags { get; set; } = null!;
+        public List<Tag> Tags { get; set; } = null!;
 
         public DateTime DatePublished { get; set; }
         public string MainImage { get; set; }

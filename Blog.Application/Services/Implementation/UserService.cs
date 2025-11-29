@@ -1,11 +1,13 @@
 ﻿using Blog.Application.Extensions;
 using Blog.Application.Services.Interfaces;
+using Blog.Application.Statics;
 using Blog.Application.ViewModels.Accounts;
 using Blog.Data.Entites.User;
 using Blog.Data.Repositories.Implementations;
 using Blog.Data.Repositories.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Win32;
 using Resume.Utilities;
 
 namespace Blog.Application.Services.Implementation
@@ -66,6 +68,8 @@ namespace Blog.Application.Services.Implementation
                 ? await _userRepository.GetByEmailAsync(login.UserNameOrEmail)
                 : await _userRepository.GetByUserNameAsync(login.UserNameOrEmail);
             if (user == null)
+                return LoginUserResult.NotFound;
+            if (!PasswordHelper.VerifyPassword(login.Password, user.Password))
                 return LoginUserResult.NotFound;
             if (user.IsBanned)
                 return LoginUserResult.Banned;
@@ -242,6 +246,58 @@ namespace Blog.Application.Services.Implementation
             _userRepository.Update(user);
             await _userRepository.SaveChangesAsync();
             return true;
+        }
+
+        public async Task<EditUserInProfile?> GetUserForEditInProfileAsync(int userId)
+        {
+            var user = await _userRepository.GetByIdAsync(userId);
+            if (user == null)
+                return null;
+            return new EditUserInProfile
+            {
+                CurrentAvatar = user.AvatarName!,
+                UserName = user.UserName
+            };
+        }
+
+        public async Task<EditUserInProfileResult> EditUserInProfileAsync(int userId, EditUserInProfile edit)
+        {
+            var user = await _userRepository.GetByIdAsync(userId);
+            if (user == null)
+                return EditUserInProfileResult.UserNotFound;
+            if (edit.UserName != null)
+            {
+                var checkUserName = await _userRepository.CheckUserNameExistedAsync(edit.UserName,user.Id);
+                if (checkUserName)
+                    return EditUserInProfileResult.UserNameExists;
+                user.UserName = edit.UserName;
+            }
+            if(edit.NewAvatar != null)
+            {
+                var imageName = edit.NewAvatar.FileNameGenerator();
+                var upResult = await edit.NewAvatar.UploadImage(imageName,PathTools.UserAvatarOrgServerPath,PathTools.UserAvatarThumbServerPath);
+                if(!upResult)
+                    return EditUserInProfileResult.InvalidImage;
+                user.AvatarName.DeleteImage(PathTools.UserAvatarOrgServerPath,PathTools.UserAvatarThumbServerPath);
+                user.AvatarName = imageName;
+            }
+            _userRepository.Update(user);
+            await _userRepository.SaveChangesAsync();
+            return EditUserInProfileResult.Success;
+        }
+
+        public async Task<bool> ChangePasswordInUserPanelAsync(int userId, ChangePasswordInUserPanelViewModel change)
+        {
+            var user = await _userRepository.GetByIdAsync(userId);
+            var checkPassword = PasswordHelper.VerifyPassword(change.OldPassword, user!.Password);
+            if (checkPassword)
+            {
+                user.Password = PasswordHelper.HashPassword(change.Password);
+                _userRepository.Update(user);
+                await _userRepository.SaveChangesAsync();
+                return true;
+            }
+            return false;
         }
     }
 }
