@@ -15,10 +15,8 @@ namespace Blog.Data.Entites.Blog
         [MaxLength(50)]
         public string MainImage { get; set; } = null!;
 
-        [MaxLength(250)]
         public string ShortDescription { get; set; } = null!;
 
-        
         public string Description { get; set; } = null!;
 
         public int CategoryId { get; set; }
@@ -29,7 +27,7 @@ namespace Blog.Data.Entites.Blog
 
         public PostStatus Status { get; set; }
 
-        public int? Visit { get; set; }
+        public bool IsSlider { get; set; }
     }
 
     public enum PostStatus

@@ -1,13 +1,16 @@
 ﻿using Blog.Application.Services.Implementation;
 using Blog.Application.Services.Interfaces;
 using Blog.Application.ViewModels.Accounts;
+using Blog.Web.Helpers;
 using CarPartsShop.Mvc.Helpers;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using System.Threading.Tasks;
 
 namespace Blog.Web.Areas.Admin.Pages.Roles
 {
+    [Authorize(Roles = PermissionConstants.RolesList)]
     public class IndexModel : PageModel
     {
         #region Constructor
@@ -28,11 +31,5 @@ namespace Blog.Web.Areas.Admin.Pages.Roles
             Roles = await _roleService.GetAllRolesAsync();
         }
 
-        public async Task<IActionResult> OnGetDeleteAsync(int id)
-        {
-            var result = await _roleService.RemoveRoleAsync(id);
-            return result ? JsonHelper.JsonResponse(200, "عملیات با موفقیت انجام شد")
-                : JsonHelper.JsonResponse(404, "عملیات با شکست مواجه شد");
-        }
     }
 }

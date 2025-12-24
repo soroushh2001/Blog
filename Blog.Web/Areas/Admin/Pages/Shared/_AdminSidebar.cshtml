@@ -1,0 +1,48 @@
+﻿@using Blog.Web.Helpers
+<li class="menu-item">
+    <a href="/Admin" class="menu-link">
+        <i class="menu-icon tf-icons bx bx-home-circle"></i>
+        <div data-i18n="Analytics">داشبورد</div>
+    </a>
+</li>
+
+@if (User.IsInRole(PermissionConstants.PostList))
+{
+    <li class="menu-item">
+        <a href="/Posts" class="menu-link">
+            <i class="menu-icon tf-icons bx bx-home-circle"></i>
+            <div data-i18n="Analytics">پست ها</div>
+        </a>
+    </li>
+}
+
+@if (User.IsInRole(PermissionConstants.CategoriesList))
+{
+    <li class="menu-item">
+        <a href="/Categories" class="menu-link">
+            <i class="menu-icon tf-icons bx bx-home-circle"></i>
+            <div data-i18n="Analytics">دسته بندی ها</div>
+        </a>
+    </li>
+}
+
+@if (User.IsInRole(PermissionConstants.RolesList))
+{
+    <li class="menu-item">
+        <a href="/Roles" class="menu-link">
+            <i class="menu-icon tf-icons bx bx-home-circle"></i>
+            <div data-i18n="Analytics">نقش ها</div>
+        </a>
+    </li>
+}
+
+
+@if (User.IsInRole(PermissionConstants.UsersList))
+{
+    <li class="menu-item">
+        <a href="/Users" class="menu-link">
+            <i class="menu-icon tf-icons bx bx-home-circle"></i>
+            <div data-i18n="Analytics">کاربران</div>
+        </a>
+    </li>
+}

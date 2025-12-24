@@ -17,7 +17,7 @@
             minimumInputLength: 1,
             tokenSeparators: [",", "،"],
             ajax: {
-                url: "/Admin/Posts?handler=TagSearch",
+                url: "/api/admin/TagSearch",
                 dataType: "json",
                 delay: 250,
                 data: function (params) {
@@ -111,6 +111,16 @@
                         <label class="col-sm-2 col-form-label" asp-for="Edit.CategoryId"></label>
                         <div class="col-sm-10">
                             <select class="form-select" asp-items="@Html.GetEnumSelectList<PostStatus>()" asp-for="Edit.Status"></select>
+                        </div>
+                    </div>
+
+                    <div class="row mb-3">
+                        <div class="form-check">
+                            <label class="form-check-label" asp-for="Edit.IsSlider">
+
+                            </label>
+                            <input class="form-check-input" type="checkbox" asp-for="Edit.IsSlider">
+
                         </div>
                     </div>
 

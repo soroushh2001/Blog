@@ -14,5 +14,6 @@ namespace Blog.Application.Services.Interfaces
         Task<bool> ToggleDeletePostAsync(int postId);
         Task<List<LatestPostViewModel>> GetLatestPostAsync(int take);
         Task<PostViewModel?> GetPostBySlugAsync(string slug);
+        Task<List<SliderViewModel>> GetLatestSliderAsync(int take = 5);
     }
 }

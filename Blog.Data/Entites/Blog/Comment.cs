@@ -16,7 +16,7 @@ namespace Blog.Data.Entites.Blog
         public string Text { get; set; } = null!;
 
         public int? ParentId { get; set; }
-        [ForeignKey("ParentId")] 
+        [ForeignKey("ParentId")]
         public ICollection<Comment>? Replies { get; set; }
     }
 }

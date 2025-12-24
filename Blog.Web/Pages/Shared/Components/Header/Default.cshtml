@@ -1,4 +1,5 @@
-﻿@{
+﻿@using Blog.Web.Helpers
+@{
     var categories = ViewBag.Categories as List<Blog.Application.ViewModels.Categories.CategoryViewModel>;
 }
 <header class="navbar-light navbar-sticky header-static">
@@ -6,7 +7,7 @@
     <nav class="navbar navbar-expand-lg">
         <div class="container">
             <!-- Logo START -->
-            <a class="navbar-brand" href="index.html">
+            <a class="navbar-brand" href="/">
                 <img class="navbar-brand-item light-mode-item" src="/site/assets/images/logo.svg" alt="logo">
                 <img class="navbar-brand-item dark-mode-item" src="/site/assets/images/logo-light.svg" alt="logo">
             </a>
@@ -41,28 +42,7 @@
 
                     <li class="nav-item"> <a class="nav-link" href="/posts">مقالات</a></li>
 
-                    <!-- Nav item 5 link-->
-                    @if (!User.Identity.IsAuthenticated)
-                    {
-                        <li class="nav-item"> <a class="nav-link" href="/register">ثبت نام</a></li>
-                        <li class="nav-item"> <a class="nav-link" href="/login">ورود</a></li>
-                    }
-                    else
-                    {
-
-
-                        <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle active" href="#" id="homeMenu" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">@User.Identity.Name عزیز خوش آمدید</a>
-                            <ul class="dropdown-menu" aria-labelledby="homeMenu">
-
-                                <li> <a class="dropdown-item" href="/edit-profile">ویرایش حساب کاربری</a></li>
-                                <li> <a class="dropdown-item" href="/edit-profile">تغییر کلمه عبور</a></li>
-                            </ul>
-                        </li>
-
-
-                        <li class="nav-item"> <a class="nav-link" asp-page="/Accounts/Login" asp-page-handler="Logout">خروج</a></li>
-                    }
+                 <partial name="_AuthNavbar" />
                 </ul>
             </div>
             <!-- Main navbar END -->
@@ -104,22 +84,9 @@
                     </ul>
                 </div>
                 <!-- Dark mode options END -->
-                <!-- Nav Button -->
-                <div class="nav-item d-none d-md-block">
-                    <a href="#" class="btn btn-sm btn-danger mb-0 mx-2">خبرنامه</a>
-                </div>
+               
                 <!-- Nav Search -->
-                <div class="nav-item dropdown nav-search dropdown-toggle-icon-none">
-                    <a class="nav-link pe-0 dropdown-toggle" role="button" href="#" id="navSearch" data-bs-toggle="dropdown" aria-expanded="false">
-                        <i class="bi bi-search fs-4"> </i>
-                    </a>
-                    <div class="dropdown-menu dropdown-menu-end shadow rounded p-2" aria-labelledby="navSearch">
-                        <form asp-page="/Posts/Index" method="get" class="input-group">
-                            <input class="form-control border-success" name="search" type="search" placeholder="Search" aria-label="جستجو">
-                            <button class="btn btn-success m-0" type="submit">جستجو</button>
-                        </form>
-                    </div>
-                </div>
+                <partial name="_NavSearch" />
             </div>
             <!-- Nav right END -->
         </div>

@@ -11,7 +11,7 @@ namespace Blog.Application.Services.Interfaces
         Task<List<string>> GetUserPermissionTitlesAsync(int userId);
         Task<bool> ActiveUserAsync(string code);
         Task<bool> ForgotPasswordAsync(string emailOrUsername);
-        Task<bool> ResetPasswordAsync(string code);
+        Task<bool> ResetPasswordAsync(ResetPasswordViewModel reset);
         Task<bool> CheckUserForResetPasswordAsync(string code);
         Task<FilterUsersViewModel> FilterUsersAsync(FilterUsersViewModel filter);
         Task<bool> ChangeUserPasswordInAdminAsync(ChangeUserPasswordinAdminViewModel change);

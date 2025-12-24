@@ -34,46 +34,32 @@ namespace Blog.Application.Services.Implementation
 
         public async Task<List<CommentsListViewModel>> GetCommentsForPostDetailsAsync(int postId, int skip, int take)
         {
-            var parents = await _commentRepository.GetQueryable()
-        .Where(c => c.PostId == postId && c.ParentId == null)
-        .OrderByDescending(c => c.Id)
-        .Skip(skip)
-        .Take(take)
-        .Include(c => c.User)
-        .Include(c => c.Replies)
-            .ThenInclude(r => r.User)
-        .ToListAsync();
+            var query = _commentRepository.GetQueryable();
 
-            var result = new List<CommentsListViewModel>();
+            var parentIds = await query
+                .Where(c => c.PostId == postId && c.ParentId == null)
+                .OrderByDescending(c => c.Id)
+                .Skip(skip)
+                .Take(take)
+                .Select(c => c.Id)
+                .ToListAsync();
 
-            foreach (var parent in parents)
-            {
-                result.Add(new CommentsListViewModel
+            if (parentIds.Count == 0)
+                return new();
+
+            return await query
+                .Where(c => parentIds.Contains(c.Id) || parentIds.Contains(c.ParentId ?? 0))
+                .OrderBy(c => c.CreatedAt)
+                .Select(c => new CommentsListViewModel
                 {
-                    Id = parent.Id,
-                    Text = parent.Text,
-                    ParentId = null,
-                    UserName = parent.User?.UserName ?? "",
-                    UserAvatar = parent.User?.AvatarName ?? ""
-                });
-
-                if (parent.Replies != null)
-                {
-                    foreach (var reply in parent.Replies)
-                    {
-                        result.Add(new CommentsListViewModel
-                        {
-                            Id = reply.Id,
-                            Text = reply.Text,
-                            ParentId = parent.Id,
-                            UserName = reply.User?.UserName ?? "",
-                            UserAvatar = reply.User?.AvatarName ?? ""
-                        });
-                    }
-                }
-            }
-
-            return result;
+                    Id = c.Id,
+                    Text = c.Text,
+                    ParentId = c.ParentId,
+                    CreatedAt = c.CreatedAt,
+                    UserName = c.User.UserName,
+                    UserAvatar = c.User.AvatarName
+                })
+                .ToListAsync();
         }
     }
 }

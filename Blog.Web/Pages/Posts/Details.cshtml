@@ -14,7 +14,7 @@
                 <a href="/posts/@Model.Post.Category.Slug" class="badge text-bg-@Model.Post.Category.CategoryColor.BootstrapClassName mb-2"><i class="fas fa-circle me-2 small fw-bold"></i>@Model.Post.Category.Title</a>
                 <h1 class="text-white">@Model.Post.Title</h1>
                 <p class="lead text-white">
-                    @Html.Raw(Model.Post.Description)
+                    @Html.Raw(Model.Post.ShortDescription)
                 </p>
                 @foreach (var tag in Model.Post.Tags)
                 {
@@ -35,25 +35,27 @@
 
             </div>
             <!-- Author info END -->
+
+            
+
             <!-- Comments START -->
             <div id="comments-section" class="mt-5">
               
 
             </div>
             <!-- Comments END -->
-            <!-- Reply START -->
-            <div id="comment-form">
+    
+            
+                      <div id="comment-form">
                 <partial name="_AddComment" model="new CreateCommentViewModel(){
 PostId = Model.Post.Id,
 PostSlug = Model.Post.Slug,
 }" />
             </div>
-            <!-- Reply END -->
-
+            
         </div>
         <!-- Main Content END -->
 
-    </div>
     </div>
 </section>
 
@@ -68,26 +70,36 @@ const postSlug = '@Model.Post.Slug';
 
 
 function loadMoreComments() {
-    $.get(`/Posts/Details/${postSlug}?handler=LoadComments`, { postId: postId, skip: skip, take: take })
-        .done(function (html) {
-            html = html.trim();
+    const encodedSlug = encodeURIComponent(postSlug);
+    
+    $.get(`/Posts/Details/${encodedSlug}?handler=LoadComments`, { 
+        postId: postId, 
+        skip: skip, 
+        take: take 
+    })
+    .done(function (html) {
+        html = html.trim();
 
-            if (!html) {
-                $("#load-btn").hide(); 
-                return;
-            }
+        if (!html) {
+            $("#load-btn").hide(); 
+            return;
+        }
 
-            $("#comments-section").append(html);
-            skip += take; 
+        $("#comments-section").append(html);
+        skip += take; 
 
-            const returnedCount = $(html).filter('.parent-comment').length;
-            if (returnedCount < take) {
-                $("#load-btn").hide();
-            } else {
-                $("#load-btn").show();
-            }
-        });
+        const returnedCount = $(html).filter('.parent-comment').length;
+        if (returnedCount < take) {
+            $("#load-btn").hide();
+        } else {
+            $("#load-btn").show();
+        }
+    })
+    .fail(function(xhr, status, error) {
+        console.error("Error loading comments:", error);
+    });
 }
+
 $(document).ready(function () {
     loadMoreComments(); 
 });
@@ -121,10 +133,12 @@ function highlightInputBox() {
     const interval = setInterval(() => {
         toggle = !toggle;
         box.style.backgroundColor = toggle ? "#fff3cd" : originalColor;
-
-        if (count >= 6) { 
+        
+        count++; 
+        
+        if (count >= 6) {
             clearInterval(interval);
-            box.style.backgroundColor = originalColor; 
+            box.style.backgroundColor = originalColor;
         }
     }, 200);
 }

@@ -1,12 +1,15 @@
 ﻿using Blog.Application.Services.Interfaces;
 using Blog.Application.ViewModels.Posts;
+using Blog.Web.Helpers;
 using CarPartsShop.Mvc.Helpers;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace Blog.Web.Areas.Admin.Pages.Posts
 {
+    [Authorize(Roles = PermissionConstants.PostList)]
     public class IndexModel : PageModel
     {
         #region Constructor
@@ -37,18 +40,7 @@ namespace Blog.Web.Areas.Admin.Pages.Posts
             }).ToList();
         }
 
-        public async Task<IActionResult> OnGetTagSearchAsync(string term)
-        {
-            var tags = await _postService.GetTagTitlesAsync(term);
-            return new JsonResult(tags);
-        }
-
-        public async Task<IActionResult> OnGetToggleDeleteAsync(int id)
-        {
-            var result = await _postService.ToggleDeletePostAsync(id);
-            return result ? JsonHelper.JsonResponse(200, "عملیات با موفقیت انجام شد") 
-                : JsonHelper.JsonResponse(404, "عملیات با شکست مواجه شد");
-        }
+        
 
     }
 }

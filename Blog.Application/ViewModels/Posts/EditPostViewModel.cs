@@ -20,13 +20,10 @@ namespace Blog.Application.ViewModels.Posts
 
         [Display(Name = "توضیحات کوتاه")]
         [Required(ErrorMessage = "لطفا {0} را وارد کنید")]
-        [MaxLength(250, ErrorMessage = "{0} نمی تواند بیشتر از {1} کاراکتر داشته باشد")]
-
         public string ShortDescription { get; set; } = null!;
 
         [Display(Name = "توضیحات اصلی")]
         [Required(ErrorMessage = "لطفا {0} را وارد کنید")]
-        [MaxLength(250, ErrorMessage = "{0} نمی تواند بیشتر از {1} کاراکتر داشته باشد")]
         public string Description { get; set; } = null!;
 
         [Display(Name = "دسته بندی")]
@@ -37,7 +34,12 @@ namespace Blog.Application.ViewModels.Posts
         [Required(ErrorMessage = "لطفا {0} را وارد کنید")]
         public List<string> Tags { get; set; } = null!;
 
+        [Display(Name = "وضعیت")]
         public PostStatus Status { get; set; }
+
+        [Display(Name = "اسلایدر")]
+        public bool IsSlider { get; set; }
+
     }
     public enum EditPostResult
     {

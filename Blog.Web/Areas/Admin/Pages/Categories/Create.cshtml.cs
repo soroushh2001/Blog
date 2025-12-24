@@ -2,6 +2,7 @@
 using Blog.Application.ViewModels.Categories;
 using Blog.Data.Entites.Blog;
 using Blog.Web.Helpers;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -9,6 +10,7 @@ using System.Threading.Tasks;
 
 namespace Blog.Web.Areas.Admin.Pages.Categories
 {
+    [Authorize(Roles = PermissionConstants.AddCategory)]
     public class CreateModel : PageModel
     {
         #region Constructor

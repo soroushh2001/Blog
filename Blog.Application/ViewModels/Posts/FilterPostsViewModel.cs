@@ -10,7 +10,7 @@ namespace Blog.Application.ViewModels.Posts
         public PostStatusForAdmin PostStatus { get; set; }
         public PostSortBy PostSortBy { get; set; }
 
-        public PostOrderBy PostOrderBy { get; set; }
+        public PostOrderBy PostOrderBy { get; set; } = PostOrderBy.Desc;
         public string? Tag { get; set; }
     }
 
@@ -33,8 +33,6 @@ namespace Blog.Application.ViewModels.Posts
 
         [Display(Name = "تاریخ")]
         Date,
-        [Display(Name = "بازدید")]
-        Visit
     }
 
     public enum PostOrderBy

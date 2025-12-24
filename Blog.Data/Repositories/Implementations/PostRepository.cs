@@ -105,5 +105,13 @@ namespace Blog.Data.Repositories.Implementations
             return await _context.PostTags.Where(p => p.PostId == postId)
                 .Select(p => p.Tag).ToListAsync();
         }
+
+        public async Task<List<Post>> GetLatestSliderPostAsync(int take)
+        {
+            return await _context.Posts.Where(p => p.IsSlider && p.Status == PostStatus.Published)
+                .Include(p=> p.Category).ThenInclude(p=> p.CategoryColor).
+                OrderByDescending(p => p.UpdatedAt).Take(take)
+                .ToListAsync();
+        }
     }
 }

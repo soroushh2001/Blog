@@ -40,7 +40,7 @@ namespace Blog.Web.Pages.Accounts
         {
             if (ModelState.IsValid)
             {
-                var result = await _userService.ResetPasswordAsync(Reset.EmailActiveCode);
+                var result = await _userService.ResetPasswordAsync(Reset);
                 if (!result)
                     return NotFound();
                 TempData[ToastrMessages.SuccessMessage] = "کلمه عبور با موقیت تغییر کرد.";

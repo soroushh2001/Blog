@@ -2,12 +2,14 @@
 using Blog.Application.ViewModels.Accounts;
 using Blog.Data.Entites.User;
 using Blog.Web.Helpers;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace Blog.Web.Areas.Admin.Pages.Roles
 {
+    [Authorize(Roles = PermissionConstants.EditRole)]
     public class EditModel : PageModel
     {
         #region Constructor

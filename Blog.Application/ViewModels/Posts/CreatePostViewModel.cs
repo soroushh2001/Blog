@@ -17,8 +17,6 @@ namespace Blog.Application.ViewModels.Posts
 
         [Display(Name = "توضیحات کوتاه")]
         [Required(ErrorMessage = "لطفا {0} را وارد کنید")]
-        [MaxLength(250, ErrorMessage = "{0} نمی تواند بیشتر از {1} کاراکتر داشته باشد")]
-
         public string ShortDescription { get; set; } = null!;
 
         [Display(Name = "توضیحات اصلی")]
@@ -35,6 +33,9 @@ namespace Blog.Application.ViewModels.Posts
 
         [Display(Name = "وضعیت")]
         public PostStatus Status { get; set; }
+
+        [Display(Name = "اسلایدر")]
+        public bool IsSlider { get; set; }
     }
 
     public enum CreatePostResult

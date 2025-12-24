@@ -1,6 +1,7 @@
 ﻿using Blog.Application.Services.Interfaces;
 using Blog.Application.ViewModels.Accounts;
 using Blog.Web.Helpers;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -8,6 +9,7 @@ using System.Threading.Tasks;
 
 namespace Blog.Web.Areas.Admin.Pages.Users
 {
+    [Authorize(Roles = PermissionConstants.EditUser)]
     public class ManageUserRolesModel : PageModel
     {
         private readonly IRoleService _roleService;

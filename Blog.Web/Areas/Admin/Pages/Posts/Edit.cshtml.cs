@@ -1,12 +1,15 @@
 ﻿using Blog.Application.Services.Implementation;
 using Blog.Application.Services.Interfaces;
 using Blog.Application.ViewModels.Posts;
+using Blog.Web.Helpers;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace Blog.Web.Areas.Admin.Pages.Posts
 {
+    [Authorize(Roles = PermissionConstants.EditPost)]
     public class EditModel : PageModel
     {
         #region Constructor

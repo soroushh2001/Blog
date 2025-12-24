@@ -40,7 +40,7 @@ namespace Blog.Web.Pages.Posts
             if (ModelState.IsValid)
             {
                 await _commentService.AddCommentAsync(HttpContext.User.GetCurrentUserId(),comment);
-                return Redirect($"/posts/details/{comment.PostSlug}");
+                return RedirectToPage("/Posts/Details", new { slug = comment.PostSlug });
             }
             Post = await _postService.GetPostBySlugAsync(comment.PostSlug);
             return Page();

@@ -10,7 +10,7 @@
             {
                 @foreach(var item in Model)
                 {
-                    <div class="text-center mb-3 card-bg-scale position-relative overflow-hidden rounded" style="background-image:url(@PathTools.CategoryThumbImagePath@item.Image); background-position: center left; background-size: cover;">
+                    <div class="text-center mb-3 card-bg-scale position-relative overflow-hidden rounded" style="background-image:url(@PathTools.CategoryOrgImagePath@item.Image); background-position: center 30%; background-size: cover; background-repeat: no-repeat; height: 200px; min-height: 200px;">
                         <div class="bg-dark-overlay-4 p-3">
                             <a href="/posts/@item.Slug" class="stretched-link btn-link text-white h5">@item.Title</a>
                         </div>

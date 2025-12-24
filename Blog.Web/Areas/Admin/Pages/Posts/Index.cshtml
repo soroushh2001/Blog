@@ -1,7 +1,7 @@
 ﻿@page
+@using Blog.Application.Extensions
 @using Blog.Application.ViewModels.Posts
 @using Blog.Web.Helpers
-@using CarPartsShop.Application.Extensions
 @model Blog.Web.Areas.Admin.Pages.Posts.IndexModel
 @{
     ViewData["Title"] = "پست ها";
@@ -49,12 +49,15 @@
                 </div>
             </div>
         </div>
-
-        <div class="row">
-            <div class="col-md-2">
-                <a asp-area="Admin" asp-page="/Posts/Create" class="btn btn-success mt-2">افزودن</a>
+        @if (User.IsInRole(PermissionConstants.AddPost))
+        {
+            <div class="row">
+                <div class="col-md-2">
+                    <a asp-area="Admin" asp-page="/Posts/Create" class="btn btn-success mt-2">افزودن</a>
+                </div>
             </div>
-        </div>
+
+        }
 
         @if (Model.Filter.Entities != null && Model.Filter.Entities.Any())
         {
@@ -85,18 +88,26 @@
                                     <td>@item.LastUpdateDate.ToShamsiDate()</td>
 
                                     <td>
-                                        <a asp-area="Admin" asp-page="/Posts/Edit"
-                                           asp-route-id="@item.Id"
-                                           class="btn btn-warning">ویرایش</a>
-                                        @if (item.IsDeleted)
+
+                                        @if (User.IsInRole(PermissionConstants.EditPost))
                                         {
-                                            <a class="btn btn-info" href="javascript:void(0)"
-                                               onclick="toggleDeletePost('@item.Id','@item.Title',true)">بازگردانی</a>
+                                            <a asp-area="Admin" asp-page="/Posts/Edit"
+                                               asp-route-id="@item.Id"
+                                               class="btn btn-warning">ویرایش</a>
                                         }
-                                        else
+
+                                        @if (User.IsInRole(PermissionConstants.DeletePost))
                                         {
-                                            <a class="btn btn-danger" href="javascript:void(0)"
-                                               onclick="toggleDeletePost('@item.Id','@item.Title',false)">حذف</a>
+                                            @if (item.IsDeleted)
+                                            {
+                                                <a class="btn btn-info" href="javascript:void(0)"
+                                                   onclick="toggleDeletePost('@item.Id','@item.Title',true)">بازگردانی</a>
+                                            }
+                                            else
+                                            {
+                                                <a class="btn btn-danger" href="javascript:void(0)"
+                                                   onclick="toggleDeletePost('@item.Id','@item.Title',false)">حذف</a>
+                                            }
                                         }
                                     </td>
                                 </tr>

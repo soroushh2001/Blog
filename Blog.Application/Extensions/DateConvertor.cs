@@ -1,6 +1,6 @@
 ﻿using System.Globalization;
 
-namespace CarPartsShop.Application.Extensions
+namespace Blog.Application.Extensions
 {
     public static class DateConvertor
     {

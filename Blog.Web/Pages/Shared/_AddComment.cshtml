@@ -1,7 +1,7 @@
 ﻿@model Blog.Application.ViewModels.Comments.CreateCommentViewModel
 
-<h3>ثبت دیدگاه</h3>
-<small>آدرس ایمیل شما منتشر نخواهد شد. فیلدهای الزامی علامت گذاری شده اند *</small>
+@if(User.Identity.IsAuthenticated){
+    <h3>ثبت دیدگاه</h3>
 <form method="post" class="row g-3 mt-2">
 
     <input type="hidden" asp-for="PostSlug" />
@@ -16,3 +16,8 @@
         <button type="submit" class="btn btn-primary">ثبت</button>
     </div>
 </form>
+}
+else
+{
+    <h3 class="text-info">برای ثبت دیدگاه وارد شوید.</h3>
+}

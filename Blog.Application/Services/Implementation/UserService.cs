@@ -8,7 +8,6 @@ using Blog.Data.Repositories.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Win32;
-using Resume.Utilities;
 
 namespace Blog.Application.Services.Implementation
 {
@@ -38,7 +37,7 @@ namespace Blog.Application.Services.Implementation
 
             var newUser = new User
             {
-                AvatarName = "default.png",
+                AvatarName = "DefaultAvatar.png",
                 Email = register.Email.Trim().ToLower(),
                 EmailActivationCode = Guid.NewGuid().ToString("N"),
                 UserName = register.UserName,
@@ -111,13 +110,13 @@ namespace Blog.Application.Services.Implementation
             return true;
         }
 
-        public async Task<bool> ResetPasswordAsync(string code)
+        public async Task<bool> ResetPasswordAsync(ResetPasswordViewModel reset)
         {
-            var user = await _userRepository.GetByEmailAciveCodeAsync(code);
+            var user = await _userRepository.GetByEmailAciveCodeAsync(reset.EmailActiveCode);
             if (user == null || user.IsBanned)
                 return false;
 
-            user.Password = PasswordHelper.HashPassword(user.Password);
+            user.Password = PasswordHelper.HashPassword(reset.Password);
             user.IsEmailConfirmed = true;
             user.EmailActivationCode = Guid.NewGuid().ToString("N");
             _userRepository.Update(user);
@@ -142,7 +141,7 @@ namespace Blog.Application.Services.Implementation
                     ? query.Where(q => q.Email.Contains(filter.Search))
                     : query.Where(q => q.UserName == filter.Search);
             }
-            if(filter.RoleId != null)
+            if (filter.RoleId != null)
             {
                 query = query.Where(q => q.UserRoles.Any(q => q.RoleId == filter.RoleId));
             }
@@ -173,17 +172,17 @@ namespace Blog.Application.Services.Implementation
             }
 
             var items = query.
-                Include(q=> q.UserRoles)
-                .ThenInclude(q=> q.Role).Select(q => new UserViewModel
-            {
-                Id = q.Id,
-                IsActive = q.IsEmailConfirmed,
-                RegisterDate = q.CreatedAt,
-                IsBanned = q.IsBanned,
-                Roles = q.UserRoles.Where(ur => ur.UserId == q.Id).Select(r => r.Role.PersianTitle).ToList(),
-                Username = q.UserName,
-                Email = q.Email
-            });
+                Include(q => q.UserRoles)
+                .ThenInclude(q => q.Role).Select(q => new UserViewModel
+                {
+                    Id = q.Id,
+                    IsActive = q.IsEmailConfirmed,
+                    RegisterDate = q.CreatedAt,
+                    IsBanned = q.IsBanned,
+                    Roles = q.UserRoles.Where(ur => ur.UserId == q.Id).Select(r => r.Role.PersianTitle).ToList(),
+                    Username = q.UserName,
+                    Email = q.Email
+                });
 
             await filter.SetPagingAsync(items);
             return filter;
@@ -231,7 +230,7 @@ namespace Blog.Application.Services.Implementation
         public async Task<bool> ToggleUserActivationStatusAsync(int userId)
         {
             var user = await _userRepository.GetByIdAsync(userId);
-            if(user == null) return false;
+            if (user == null) return false;
             user.IsEmailConfirmed = !user.IsEmailConfirmed;
             _userRepository.Update(user);
             await _userRepository.SaveChangesAsync();
@@ -241,7 +240,7 @@ namespace Blog.Application.Services.Implementation
         public async Task<bool> ToggleUserBanStatusAsync(int userId)
         {
             var user = await _userRepository.GetByIdAsync(userId);
-            if(user == null) return false;
+            if (user == null) return false;
             user.IsBanned = !user.IsBanned;
             _userRepository.Update(user);
             await _userRepository.SaveChangesAsync();
@@ -267,18 +266,22 @@ namespace Blog.Application.Services.Implementation
                 return EditUserInProfileResult.UserNotFound;
             if (edit.UserName != null)
             {
-                var checkUserName = await _userRepository.CheckUserNameExistedAsync(edit.UserName,user.Id);
+                var checkUserName = await _userRepository.CheckUserNameExistedAsync(edit.UserName, user.Id);
                 if (checkUserName)
                     return EditUserInProfileResult.UserNameExists;
                 user.UserName = edit.UserName;
             }
-            if(edit.NewAvatar != null)
+            if (edit.NewAvatar != null)
             {
                 var imageName = edit.NewAvatar.FileNameGenerator();
-                var upResult = await edit.NewAvatar.UploadImage(imageName,PathTools.UserAvatarOrgServerPath,PathTools.UserAvatarThumbServerPath);
-                if(!upResult)
+                var upResult = await edit.NewAvatar.UploadImage(imageName, PathTools.UserAvatarOrgServerPath, PathTools.UserAvatarThumbServerPath);
+                if (!upResult)
                     return EditUserInProfileResult.InvalidImage;
-                user.AvatarName.DeleteImage(PathTools.UserAvatarOrgServerPath,PathTools.UserAvatarThumbServerPath);
+                if (user.AvatarName != "DefaultAvatar.png")
+                {
+                    user.AvatarName.DeleteImage(PathTools.UserAvatarOrgServerPath, PathTools.UserAvatarThumbServerPath);
+
+                }
                 user.AvatarName = imageName;
             }
             _userRepository.Update(user);

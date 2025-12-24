@@ -1,4 +1,7 @@
-﻿@model List<Blog.Application.ViewModels.Comments.CommentsListViewModel>;
+﻿@using Blog.Application.Extensions
+@using Blog.Application.Statics
+@model List<Blog.Application.ViewModels.Comments.CommentsListViewModel>;
+<h3>دیدگاه ها @Model.Count</h3>
 @if (Model.Any() && Model != null)
 {
 
@@ -6,12 +9,15 @@
     {
         <!-- Comment level 1-->
         <div class="my-4 d-flex parent-comment">
-            <img class="avatar avatar-md rounded-circle float-start me-3" src="/site/assets/images/avatar/01.jpg" alt="avatar">
+            <img class="avatar avatar-md rounded-circle float-start me-3" src="@PathTools.UserAvatarThumbPath@comment.UserAvatar" alt="avatar">
             <div>
                 <div class="mb-2">
                     <h5 class="m-0">@comment.UserName</h5>
-                    <span class="me-3 small">21 خرداد، 1400 در 3:00 بعد از ظهر </span>
-                    <a href="javascript:void(0)" onclick="setReply('@comment.Id')" class="text-body fw-normal">پاسخ</a>
+                    <span class="me-3 small">@comment.CreatedAt.ToShamsiDate() </span>
+                    @if (User.Identity.IsAuthenticated)
+                    {
+                        <a href="javascript:void(0)" onclick="setReply('@comment.Id')" class="text-body fw-normal">پاسخ</a>
+                    }
                 </div>
                 <p>@comment.Text</p>
             </div>
@@ -22,23 +28,19 @@
             foreach (var reply in Model.Where(p => p.ParentId == comment.Id))
             {
                 <div class="my-4 d-flex ps-2 ps-md-3">
-                    <img class="avatar avatar-md rounded-circle float-start me-3" src="/site/assets/images/avatar/02.jpg" alt="avatar">
+                    <img class="avatar avatar-md rounded-circle float-start me-3" src="@PathTools.UserAvatarThumbPath@reply.UserAvatar" alt="avatar">
                     <div>
                         <div class="mb-2">
                             <h5 class="m-0">@reply.UserName</h5>
-                            <span class="me-3 small">21 خرداد، 1400 در 3:00 بعد از ظهر </span>
-                            <a href="#" class="text-body fw-normal">پاسخ</a>
+                            <span class="me-3 small">@reply.CreatedAt.ToShamsiDate() </span>
                         </div>
-                        <p>@comment.Text</p>
+                        <p>@reply.Text</p>
                     </div>
                 </div>
-
             }
         }
 
     }
     <button id="load-btn" onclick="loadMoreComments()" class="btn btn-primary">Load More</button>
 
-
 }
-

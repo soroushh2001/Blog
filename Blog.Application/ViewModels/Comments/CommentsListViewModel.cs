@@ -10,6 +10,7 @@ namespace Blog.Application.ViewModels.Comments
         public string UserAvatar { get; set; } = null!;
         public string Text { get; set; } = null!;
         public int? ParentId { get; set; }
+        public DateTime CreatedAt { get; set; }
 
     }
 }

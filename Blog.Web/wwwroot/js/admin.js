@@ -19,8 +19,8 @@
     }).then((result) => {
         if (result.isConfirmed) {
             $.ajax({
-                url: "/Admin/Categories?handler=ToggleDelete",
-                type: "get",
+                url: "/api/admin/ToggleDeleteCategory",
+                type: "post",
                 data: {
                     id: id
                 },
@@ -66,8 +66,8 @@ function toggleDeletePost(id, postTitle, deleteStatus) {
     }).then((result) => {
         if (result.isConfirmed) {
             $.ajax({
-                url: "/Admin/Posts?handler=ToggleDelete",
-                type: "get",
+                url: "/api/admin/ToggleDeletePost",
+                type: "post",
                 data: {
                     id: id
                 },
@@ -105,8 +105,8 @@ function deleteRole(id, roleTitle) {
     }).then((result) => {
         if (result.isConfirmed) {
             $.ajax({
-                url: "/Admin/Roles?handler=Delete",
-                type: "get",
+                url: "/api/admin/DeleteRole",
+                type: "post",
                 data: {
                     id: id
                 },
@@ -151,8 +151,8 @@ function toggleUserActivationStatus(id, userName, deleteStatus) {
     }).then((result) => {
         if (result.isConfirmed) {
             $.ajax({
-                url: "/Admin/Users?handler=ToggleUserActivationStatus",
-                type: "get",
+                url: "/api/admin/ToggleUserActivationStatus",
+                type: "post",
                 data: {
                     id: id
                 },
@@ -197,8 +197,8 @@ function toggleUserBanStatus(id, userName, deleteStatus) {
     }).then((result) => {
         if (result.isConfirmed) {
             $.ajax({
-                url: "/Admin/Users?handler=ToggleUserBanStatus",
-                type: "get",
+                url: "/api/admin/ToggleUserBanStatus",
+                type: "post",
                 data: {
                     id: id
                 },

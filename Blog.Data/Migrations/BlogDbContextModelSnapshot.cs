@@ -158,6 +158,9 @@ namespace Blog.Data.Migrations
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
 
+                    b.Property<bool>("IsSlider")
+                        .HasColumnType("bit");
+
                     b.Property<string>("MainImage")
                         .IsRequired()
                         .HasMaxLength(50)
@@ -165,8 +168,7 @@ namespace Blog.Data.Migrations
 
                     b.Property<string>("ShortDescription")
                         .IsRequired()
-                        .HasMaxLength(250)
-                        .HasColumnType("nvarchar(250)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Slug")
                         .IsRequired()
@@ -183,9 +185,6 @@ namespace Blog.Data.Migrations
 
                     b.Property<DateTime>("UpdatedAt")
                         .HasColumnType("datetime2");
-
-                    b.Property<int?>("Visit")
-                        .HasColumnType("int");
 
                     b.HasKey("Id");
 

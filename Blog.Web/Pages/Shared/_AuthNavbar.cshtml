@@ -1,0 +1,29 @@
+﻿@using Blog.Web.Helpers
+   <!-- Nav item 5 link-->
+@if (!User.Identity.IsAuthenticated)
+{
+    <li class="nav-item"> <a class="nav-link" href="/register">ثبت نام</a></li>
+    <li class="nav-item"> <a class="nav-link" href="/login">ورود</a></li>
+
+}
+else
+{
+
+
+    <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle active" href="#" id="homeMenu" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">@User.Identity.Name عزیز خوش آمدید</a>
+        <ul class="dropdown-menu" aria-labelledby="homeMenu">
+
+            <li> <a class="dropdown-item" href="/edit-profile">ویرایش حساب کاربری</a></li>
+            <li> <a class="dropdown-item" href="/edit-profile">تغییر کلمه عبور</a></li>
+            @if (User.IsInRole(PermissionConstants.Dashboard))
+            {
+                <li> <a class="dropdown-item" href="/admin">داشبورد</a></li>
+
+            }
+        </ul>
+    </li>
+
+
+    <li class="nav-item"> <a class="nav-link" asp-page="/Accounts/Login" asp-page-handler="Logout">خروج</a></li>
+}

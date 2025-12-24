@@ -2,12 +2,14 @@
 using Blog.Application.ViewModels.Categories;
 using Blog.Application.ViewModels.Posts;
 using Blog.Web.Helpers;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace Blog.Web.Areas.Admin.Pages.Posts
 {
+    [Authorize(Roles = PermissionConstants.AddPost)]
     public class CreateModel : PageModel
     {
         #region Constructor

@@ -7,9 +7,20 @@ namespace Blog.Web.ViewComponents
 
     public class SliderViewComponent : ViewComponent
     {
+        #region Constructor
+
+        private readonly IPostService _postService;
+
+        public SliderViewComponent(IPostService postService)
+        {
+            _postService = postService;
+        }
+
+        #endregion
+
         public async Task<IViewComponentResult> InvokeAsync()
         {
-            return View();
+            return View(await _postService.GetLatestSliderAsync(5));
         }
     }
 
@@ -32,7 +43,7 @@ namespace Blog.Web.ViewComponents
 
         public async Task<IViewComponentResult> InvokeAsync()
         {
-            var model = await _postService.GetLatestPostAsync(1);
+            var model = await _postService.GetLatestPostAsync(9);
             return View(model);
         }
     }

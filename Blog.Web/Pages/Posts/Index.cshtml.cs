@@ -7,7 +7,6 @@ using System.Threading.Tasks;
 
 namespace Blog.Web.Pages.Posts
 {
-    [Authorize]
     public class IndexModel : PageModel
     {
         #region Constructor

@@ -1,5 +1,5 @@
-﻿@using Blog.Application.Statics
-@using CarPartsShop.Application.Extensions
+﻿@using Blog.Application.Extensions
+@using Blog.Application.Statics
 @model List<Blog.Application.ViewModels.Posts.LatestPostViewModel>
 <section class="p-0">
     <div class="container">
@@ -11,7 +11,7 @@
                     <div class="card card-overlay-bottom card-img-scale overflow-hidden">
                         <!-- Card featured -->
                         <!-- Card Image -->
-                        <img src="@PathTools.PostOrgImagePath@item.MainImage" alt="">
+                        <img src="@PathTools.PostOrgImagePath@item.MainImage" style="width:350px!important;height:350px!important;" alt="">
                         <!-- Card Image overlay -->
                         <div class="card-img-overlay d-flex flex-column p-3 p-md-4">
                             <div>

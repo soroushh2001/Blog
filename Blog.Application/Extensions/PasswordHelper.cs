@@ -1,4 +1,4 @@
-﻿namespace Resume.Utilities
+﻿namespace Blog.Application.Extensions
 {
     public static class PasswordHelper
     {

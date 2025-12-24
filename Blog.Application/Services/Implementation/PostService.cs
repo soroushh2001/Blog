@@ -64,15 +64,10 @@ namespace Blog.Application.Services.Implementation
                         ? query.OrderByDescending(x => x.UpdatedAt)
                         : query.OrderBy(x => x.UpdatedAt);
                     break;
-                case PostSortBy.Visit:
-                    query = filter.PostOrderBy != PostOrderBy.Desc ?
-                        query.OrderByDescending(x => x.Visit) :
-                        query.OrderBy(x => x.Visit);
-                    break;
             }
 
 
-            var items = query.Select(q => new PostListViewModel
+            var posts = query.Select(q => new PostListViewModel
             {
                 Id = q.Id,
                 LastUpdateDate = q.UpdatedAt,
@@ -87,7 +82,7 @@ namespace Blog.Application.Services.Implementation
                 CategorySlug = q.Category.Slug
             });
            
-            await filter.SetPagingAsync(items);
+            await filter.SetPagingAsync(posts);
 
             return filter;
         }
@@ -102,6 +97,7 @@ namespace Blog.Application.Services.Implementation
                 Title = create.Title,
                 Slug = create.Title.GenerateSlug(),
                 Status = create.Status,
+                IsSlider = create.IsSlider,
             };
 
             var imageName = create.MainImage.FileNameGenerator();
@@ -169,7 +165,9 @@ namespace Blog.Application.Services.Implementation
                 MainImage = post.MainImage,
                 ShortDescription = post.ShortDescription,
                 Title = post.Title,
-                Id = post.Id
+                Id = post.Id,
+                IsSlider = post.IsSlider,
+                Status = post.Status
             };
         }
 
@@ -186,14 +184,16 @@ namespace Blog.Application.Services.Implementation
             postToEdit.Status = edit.Status;
             postToEdit.Slug = edit.Title.GenerateSlug();
             postToEdit.UpdatedAt = DateTime.Now;
+            postToEdit.Status = edit.Status;
+            postToEdit.IsSlider = edit.IsSlider;
 
             if (edit.NewMainImage != null)
             {
-                postToEdit.MainImage.DeleteImage(PathTools.PostOrgImageServerPath, PathTools.PostThumbImageServerPath);
                 var imageName = edit.NewMainImage.FileNameGenerator();
                 var upResult = await edit.NewMainImage.UploadImage(imageName, PathTools.PostOrgImageServerPath, PathTools.PostThumbImageServerPath);
                 if (!upResult)
                     return EditPostResult.InvalidImage;
+                postToEdit.MainImage.DeleteImage(PathTools.PostOrgImageServerPath, PathTools.PostThumbImageServerPath);
                 postToEdit.MainImage = imageName;
             }
             _postRepository.Update(postToEdit);
@@ -250,6 +250,18 @@ namespace Blog.Application.Services.Implementation
                 MainImage = post.MainImage,
                 Id = post.Id
             };
+        }
+
+        public async Task<List<SliderViewModel>> GetLatestSliderAsync(int take)
+        {
+            var sliders = await _postRepository.GetLatestSliderPostAsync(take);
+            return sliders.Select(n => new SliderViewModel
+            {
+                Category = n.Category,
+                Image = n.MainImage,
+                Slug = n.Slug,
+                Title = n.Title,
+            }).ToList();
         }
     }
 }
